@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-main',
@@ -7,9 +8,96 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+
+  rulesArr = new FormArray([]);
+  revenueForm: FormGroup;
+  
+   info: any = [];
+
+
+  constructor(
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
+
+    this.revenueForm = this.formBuilder.group({
+      group_name: ['', Validators.required],
+      group_description: [''],
+      group_revenue: [''],
+      group_rules: this.formBuilder.array([])
+    });
+
+    this.rules.push(this.newRules());
+
+    // this.info = [];
+
+
+
+
   }
 
+
+  get rules(): FormArray {
+    return this.revenueForm.get("group_rules") as FormArray
+  }
+
+
+  // rules function lists //
+  newRules(): FormGroup {
+    return this.formBuilder.group({
+      field: [''],
+      operator: [''],
+      parameters: this.formBuilder.array([]),
+    })
+  }
+
+  addRules() {
+    this.rules.push(this.newRules());
+    
+
+  }
+
+  removeRules(i: number) {
+    this.rules.removeAt(i);
+  }
+
+
+
+  // rules' parameter function lists
+  ruleParameters(i: number): FormArray {
+    return this.rules.at(i).get('parameters') as FormArray
+  }
+
+  newParameters(): FormGroup {
+    return this.formBuilder.group({
+      param_name: ['']
+    })
+  }
+
+  addParameters(i: any) {
+    this.ruleParameters(i).push(this.newParameters());
+  }
+
+  removeParameters(i: number, j: any) {
+    this.ruleParameters(i).removeAt(j);
+  }
+
+
+
+  submitForm(value: any){
+    console.log(value);
+
+    this.info.push(value);
+    console.log(this.info);
+    this.revenueForm.reset();
+
+    
+    
+  }
+
+  reset(){
+    this.revenueForm.reset();
+    this.info = [];
+  }
 }
