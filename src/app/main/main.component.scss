@@ -14,9 +14,28 @@
     }
 }
 
-.section-2{
+#section-2{
     padding: 1%;
     border: 1px solid grey;
+    margin: 3% 0;
+
+
+    .delete-div{
+        align-self: center;
+        text-align: center;
+    }
+
+    .delete-btn{
+        color: red;
+    }
+
+    mat-icon{
+        cursor: pointer;
+    }
+}
+
+table{
+    width: 100%;
 }
 
 ::ng-deep .mat-form-field-appearance-outline  .mat-form-field-infix {

@@ -12,6 +12,7 @@
         <mat-form-field floatLabel="always" appearance="outline" class="w-100 mt-1">
           <mat-label float>Group Name</mat-label>
           <input formControlName="group_name" placeholder="name" type="text" matInput>
+          <mat-error *ngIf="revenueForm.controls.group_name.errors">This field is required</mat-error>
         </mat-form-field>
 
         <mat-form-field floatLabel="always" appearance="outline" class="w-100 mt-1">
@@ -19,6 +20,8 @@
           <textarea formControlName="group_description" #input placeholder="Add description" cols="30"
             matInput></textarea>
           <span matSuffix>{{input.value?.length || 0}}/200</span>
+          <mat-error *ngIf="revenueForm.controls.group_description.errors">This field is required</mat-error>
+
         </mat-form-field>
 
 
@@ -26,16 +29,12 @@
           <mat-checkbox>Special Group</mat-checkbox>
         </p>
 
-
-
-
-
         <div fxLayout="row" fxLayoutAlign="start center">
           <p fxFlex="10">
             Rules
           </p>
 
-          <button (click)="addRules()" class="icon-1" mat-flat-button fxFlexOffset="75" fxFlex="15">
+          <button type="button" (click)="addRules()" class="icon-1" mat-flat-button fxFlexOffset="75" fxFlex="15">
             <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>
             Add
           </button>
@@ -52,7 +51,8 @@
 
               <div fxLayout="row" fxLayoutAlign=" center">
                 <h4 fxFlex="10" class="mb-0">Rule {{i+1}}</h4>
-                <button (click)="removeRules(i)" fxFlexOffset="80" fxFlex="10" color="warn" mat-icon-button>
+                <button type="button" (click)="removeRules(i)" fxFlexOffset="80" fxFlex="10" color="warn"
+                  mat-icon-button>
                   <mat-icon style="vertical-align: sub;">close</mat-icon>
                 </button>
               </div>
@@ -83,118 +83,58 @@
                   </mat-form-field>
                 </div>
 
-                <!-- <div fxFlex="50" fxFlex.lt-sm="100">
-                  <div fxFlex="row" fxLayoutAlign.gt-sm="start center">
-                    <mat-form-field fxFlex="80" floatLabel="always" appearance="outline" class="mt-1">
-                      <mat-label>Parameters</mat-label>
-                      <input formControlName="field" placeholder="Enter parameter" type="text" matInput>
-                    </mat-form-field>
-
-
-                    <button (click)="addParameters(i)" fxFlex="10" mat-icon-button>
-                      <mat-icon class="ml-1" style="vertical-align: sub;">add_circle_outline</mat-icon>
-                    </button>
-
-
-
-
-                  </div>
-                </div> -->
-
                 <div class="bg-grey" fxFlex="50" formArrayName="parameters">
 
-                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center"
-                      *ngFor="let param of ruleParameters(i).controls; let j = index">
-    
-                      <div [formGroupName]="j">
-                        <mat-form-field fxFlex="80" floatLabel="always" appearance="outline"
-                          class=" mt-1">
-                          <mat-label>Parameters</mat-label>
-                          <input formControlName="param_name" placeholder="Enter parameter" type="text" matInput>
-                        </mat-form-field>
-    
-                        <div [hidden]="j === 0" style="align-self: center">
-                          <mat-icon style="cursor: pointer;" (click)="removeParameters(i, j)" class="ml-1">
-                            remove_circle_outline</mat-icon>
-                        </div>
-    
-    
-    
+                  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center"
+                    *ngFor="let param of ruleParameters(i).controls; let j = index">
+
+                    <div [formGroupName]="j">
+                      <mat-form-field fxFlex="80" floatLabel="always" appearance="outline" class=" mt-1">
+                        <mat-label>Parameters</mat-label>
+                        <input formControlName="param_name" placeholder="Enter parameter" type="text" matInput>
+                      </mat-form-field>
+
+                      <div [hidden]="j === 0" style="align-self: center">
+                        <mat-icon style="cursor: pointer;" (click)="removeParameters(i, j)" class="ml-1">
+                          remove_circle_outline</mat-icon>
                       </div>
+
+
+
                     </div>
-    
-    
                   </div>
 
-                <button type="button" (click)="addParameters(i)" fxFlex="10" mat-icon-button>
-                    <mat-icon class="ml-1" style="vertical-align: sub;">add_circle_outline</mat-icon>
-                  </button>
-              </div>
 
-
-              <!-- <div class="bg-grey" formArrayName="parameters">
-
-                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center"
-                  *ngFor="let param of ruleParameters(i).controls; let j = index">
-
-                  <div [formGroupName]="j">
-                    <mat-form-field fxFlexOffset.gt-sm="100" fxFlex="85" floatLabel="always" appearance="outline"
-                      class=" mt-1">
-                      <mat-label>Parameters</mat-label>
-                      <input formControlName="param_name" placeholder="Enter parameter" type="text" matInput>
-                    </mat-form-field>
-
-                    <div style="align-self: center">
-                      <mat-icon style="cursor: pointer;" (click)="removeParameters(i, j)" class="ml-1">
-                        remove_circle_outline</mat-icon>
-                    </div>
-
-
-
-                  </div>
                 </div>
 
-
-              </div> -->
-
-
-
-
-
-
-
+                <button type="button" (click)="addParameters(i)" fxFlex="10" mat-icon-button>
+                  <mat-icon class="ml-1" style="vertical-align: sub;">add_circle_outline</mat-icon>
+                </button>
+              </div>
             </div>
-
-
 
           </section>
 
         </div>
 
-
-
-
-
       </div>
-
-
-
 
     </div>
 
     <div fxLayout="row" class="mt-2" fxLayoutAlign="start center">
-        <p class="mr-3">then revenue is </p>
-        <mat-form-field class="amount_field" appearance="outline">
-            <span matPrefix>%</span>
-            <input placeholder="enter amount" type="number" matInput formControlName="group_revenue">
-        </mat-form-field>
+      <p class="mr-3">then revenue is </p>
+      <mat-form-field class="amount_field" appearance="outline">
+        <span matPrefix>%</span>
+        <input placeholder="enter amount" type="number" matInput formControlName="group_revenue">
+        <mat-error *ngIf="revenueForm.controls.group_revenue.errors">This field is required</mat-error>
+      </mat-form-field>
     </div>
 
 
     <div class="mt-3" fxLayout="row" fxLayoutAlign=" center">
       <div fxFlex="60" class="p-1 text-right">
         <button type="button" (click)="reset()" class="mr-2" mat-raised-button>Reset</button>
-        <button type="submit" color="primary" mat-raised-button>Submit</button>
+        <button type="submit" color="primary" mat-raised-button [disabled]="!revenueForm.valid">Submit</button>
 
       </div>
 
@@ -206,17 +146,28 @@
 </div>
 
 
-<!-- <ng-container *ngIf="info?.length >= 1"> -->
-<ng-container>
+<ng-container *ngIf="info?.length >= 1">
   <div fxLayout="row">
 
     <div fxFlex="60" fxFlex.lt-sm="100" class="p-1">
 
       <h2>Browse Revenue Groups</h2>
 
-      <section class="section-2" *ngFor="let data of info; let i = index">
-        <h5>Group Name: {{data.group_name}}</h5>
-        <p>{{data.group_description}}</p>
+      <section id="section-2" *ngFor="let data of info; let i = index">
+
+        <div fxLayout="row">
+          <div fxFlex="90">
+            <h3>Group Name: {{data.group_name}}</h3>
+            <p>{{data.group_description}}</p>
+          </div>
+
+          <div fxFlex="10" class="delete-div">
+            <mat-icon class="delete-btn" (click)="deleteRulesArr(i)">delete</mat-icon>
+          </div>
+
+        </div>
+
+
 
         <div class="table responsive">
           <table>
@@ -225,7 +176,7 @@
               <th>Field</th>
               <th>Operator</th>
               <th *ngFor="let param of data.group_rules[0].parameters; let z = index">
-                  Parameters {{z+1}}
+                Parameters {{z+1}}
               </th>
               <th>Revenue</th>
               <th>Action</th>

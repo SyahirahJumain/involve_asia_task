@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-main',
@@ -11,8 +12,8 @@ export class MainComponent implements OnInit {
 
   rulesArr = new FormArray([]);
   revenueForm: FormGroup;
-  
-   info: any = [];
+
+  info: any = [];
 
 
   constructor(
@@ -23,17 +24,12 @@ export class MainComponent implements OnInit {
 
     this.revenueForm = this.formBuilder.group({
       group_name: ['', Validators.required],
-      group_description: [''],
-      group_revenue: [''],
+      group_description: ['', Validators.required],
+      group_revenue: ['', Validators.required],
       group_rules: this.formBuilder.array([])
     });
 
     this.rules.push(this.newRules());
-
-    // this.info = [];
-
-
-
 
   }
 
@@ -54,7 +50,7 @@ export class MainComponent implements OnInit {
 
   addRules() {
     this.rules.push(this.newRules());
-    
+
 
   }
 
@@ -85,18 +81,36 @@ export class MainComponent implements OnInit {
 
 
 
-  submitForm(value: any){
+  submitForm(value: any) {
     console.log(value);
 
     this.info.push(value);
     console.log(this.info);
     this.revenueForm.reset();
 
-    
-    
+
+
   }
 
-  reset(){
+  deleteRulesArr(index: number) {
+    // this.info.splice(index)
+    Swal.fire({
+      title: 'Are you sure to delete this rule?',
+      timer: 3000,
+      icon: 'question',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Confirm'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.info.splice(index)
+      } else {
+
+      }
+    })
+  }
+
+  reset() {
     this.revenueForm.reset();
     this.info = [];
   }
